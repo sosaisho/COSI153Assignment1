@@ -4,6 +4,8 @@ import { Text, StyleSheet, View, TouchableOpacity, FlatList, useColorScheme, Ima
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { MaterialIcons } from "@expo/vector-icons";
+import userAccount from "./userAccount"
+import { useNavigation } from "@react-navigation/native";
 
 
 const Root = createNativeStackNavigator();
@@ -37,19 +39,21 @@ export default function App() {
             )
           })}
         />
+        <Root.Screen name="User Account" component={userAccount} headerMode={"screen"} />
       </Root.Navigator>
     </NavigationContainer>
   );
 }
 
 function Home() {
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <Text>This is the home screen :)</Text>
       <StatusBar style="auto" />
       <Button
-        title="Press me"
-        onPress={() => Alert.alert("You pressed a button")}
+        title="Make User Account"
+        onPress={() => navigation.navigate("User Account",{likes:"Dogs"})}
       />
       <Image source = {dog}
       style={{ flex: 1, height: null, width: null, margin: 10 }}/>
@@ -96,6 +100,7 @@ function Settings() {
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {
