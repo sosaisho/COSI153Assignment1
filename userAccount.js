@@ -1,7 +1,8 @@
 
-import { Text, StyleSheet, View, TouchableOpacity, FlatList, useColorScheme, Image, ScrollView, Button, Alert, TextInput } from "react-native";
+import { Text, StyleSheet, View, TouchableOpacity, FlatList, useColorScheme, Image, ScrollView, Alert } from "react-native";
 import React, { useState, useEffect } from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Avatar, Button, Card, Title, Paragraph, TextInput, Headline, DefaultTheme } from 'react-native-paper';
 
 export default function userAccount({ route, navigation }) {
     const [userName, setUserName] = useState("");
@@ -37,23 +38,25 @@ export default function userAccount({ route, navigation }) {
 
     return (
         <View style={styles.container}>
-            <Text>This user likes: {route.params.likes}</Text>
+            <Text style={{fontSize: 18,color: DefaultTheme.colors.primary}}>This user likes: {route.params.likes}</Text>
             <TextInput
-                style={{ borderWidth: 1, borderColor: "blue"}}
+                style={{ borderWidth: 1, borderColor: DefaultTheme.colors.primary, marginBottom: 10,}}
                 placeholder="Type your name(last name, first name)"
                 onChangeText={(text) => setUserName(text)}
                 value={userName}
             />
             <TextInput
-                style={{ borderWidth: 1, borderColor: "blue",}}
+                style={{ borderWidth: 1, borderColor: DefaultTheme.colors.primary,}}
                 placeholder="Type your email address"
                 onChangeText={(text) => setEmail(text)}
                 value={email}
             />
             <Button
-                title="Submit"
                 onPress={() => saveUser()}
-            />
+                mode="contained"
+            >
+                Submit
+            </Button>
         </View>
     );
 }
