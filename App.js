@@ -7,7 +7,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import userAccount from "./userAccount"
 import { useNavigation } from "@react-navigation/native";
 import { Provider as PaperProvider } from 'react-native-paper';
-import { Avatar, Button, Card, Title, Paragraph, TextInput, Headline, DefaultTheme } from 'react-native-paper';
+import { Avatar, Button, Card, Title, Paragraph, TextInput, Headline, DefaultTheme, LeftContent } from 'react-native-paper';
 
 
 const Root = createNativeStackNavigator();
@@ -58,6 +58,32 @@ export default function App() {
 }
 
 function Home() {
+  const [dogs, setDogs] = useState([]);
+  useEffect(() => {
+    async function fetchDog() {
+      await fetch("http://random.dog/doggos?include=jpg")
+        .then((response) => response.json())
+        .then((responseJson) => setDogs(responseJson.slice(0,100)))
+          .catch((error) => {
+            console.error(error);
+          })
+    }
+    fetchDog();
+  }, []);
+
+  function renderDog(dog) {
+    return (
+      <Card>
+        <Card.Cover source={{ uri: "https://random.dog/"+dog }} />
+        <Card.Actions>
+          <Button onPress={() => Alert.alert("You liked a picture!")}>
+            Like
+          </Button>
+        </Card.Actions>
+      </Card>
+    )
+  }
+
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
@@ -68,6 +94,11 @@ function Home() {
       >
         Make User Account
         </Button>
+      <FlatList
+        data={dogs}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={(item) => renderDog(item.item)}
+      />
       <Image source={{ uri: 'https://www.photolibrary.jp/mhd7/img631/450-20180907205036139279.jpg' }}
         style={{ flex: 1, height: null, width: null, margin: 10 }} />
     </View>
@@ -78,7 +109,7 @@ function About() {
   return (
     <View style={styles.containerHorizontal}>
       <ScrollView contentContainerStyle={styles.chipContainer} horizontal={true}>
-        <Text　style={{ color: DefaultTheme.colors.primary }}>This app let you look at cute animal pictures of your choice.</Text>
+        <Text style={{ color: DefaultTheme.colors.primary }}>This app let you look at cute animal pictures of your choice.</Text>
         <Text style={{ color: DefaultTheme.colors.primary }}> Hope the pictures of cute animals make your day better!</Text>
       </ScrollView>
     </View>
